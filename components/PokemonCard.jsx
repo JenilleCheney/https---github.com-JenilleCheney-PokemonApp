@@ -4,6 +4,13 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 export default function PokemonCard({ item, onPress, onToggleFavorite, isFavorite }) {
   const img = item.sprites.other['official-artwork'].front_default;
 
+  const handleFavoritePress = (e) => {
+    if (e) e.stopPropagation();
+    if (onToggleFavorite) {
+      onToggleFavorite();
+    }
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image source={{ uri: img }} style={styles.image} />
@@ -13,9 +20,11 @@ export default function PokemonCard({ item, onPress, onToggleFavorite, isFavorit
         <Text>Height: {item.height}</Text>
         <Text>Weight: {item.weight}</Text>
       </View>
-      <TouchableOpacity onPress={onToggleFavorite}>
-        <Text style={styles.star}>{isFavorite ? '★' : '☆'}</Text>
-      </TouchableOpacity>
+      {onToggleFavorite && (
+        <TouchableOpacity onPress={handleFavoritePress}>
+          <Text style={styles.star}>{isFavorite ? '★' : '☆'}</Text>
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 }

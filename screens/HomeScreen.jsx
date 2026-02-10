@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import PokemonCard from '../components/PokemonCard';
 import SearchBar from '../components/SearchBar';
+import DetailsModal from './DetailsModal';
 import { fetchPokemonList } from '../api/pokemonApi';
 
 export default function HomeScreen() {
@@ -9,6 +10,8 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     loadPokemon();
@@ -26,6 +29,16 @@ export default function HomeScreen() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCardPress = (item) => {
+    setSelectedPokemon(item);
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setSelectedPokemon(null);
   };
 
   const filteredPokemon = pokemon.filter((p) => {
@@ -59,8 +72,13 @@ export default function HomeScreen() {
         data={filteredPokemon}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <PokemonCard item={item} onPress={() => {}} />
+          <PokemonCard item={item} onPress={() => handleCardPress(item)} />
         )}
+      />
+      <DetailsModal 
+        visible={modalVisible}
+        pokemon={selectedPokemon}
+        onClose={handleCloseModal}
       />
     </View>
   );
