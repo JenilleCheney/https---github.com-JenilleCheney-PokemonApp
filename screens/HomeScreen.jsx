@@ -1,0 +1,75 @@
+import React, { useEffect, useState } from 'react';
+import { View, FlatList, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import PokemonCard from '../components/PokemonCard';
+import { fetchPokemonList } from '../api/pokemonApi';
+
+export default function HomeScreen() {
+  const [pokemon, setPokemon] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    loadPokemon();
+  }, []);
+
+  const loadPokemon = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await fetchPokemonList();
+      setPokemon(data);
+    } catch (err) {
+      setError(err.message);
+      console.error('Error loading pokemon:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={styles.loadingText}>Loading Pokemon...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.centerContainer}>
+        <Text style={styles.errorText}>Error: {error}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ flex: 1, padding: 12 }}>
+      <FlatList
+        data={pokemon}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <PokemonCard item={item} onPress={() => {}} />
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+});
