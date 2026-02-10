@@ -46,6 +46,9 @@ Personal Pokedex is a React Native mobile application built with Expo that allow
 
 4. **Run on your device**:
    - **Mobile**: Scan the QR code with:
+  
+     <img width="396" height="502" alt="image" src="https://github.com/user-attachments/assets/f369dba9-a294-4b89-a2b2-5ee6487720c1" />
+
      - iOS: Camera app
      - Android: Expo Go app
    - **Web**: Press `w` in the terminal to open in browser
