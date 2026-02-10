@@ -15,7 +15,10 @@ export default function PokemonCard({ item, onPress, onToggleFavorite, isFavorit
 
   return (
     <TouchableOpacity style={[styles.card, { backgroundColor: theme.cardBackground }]} onPress={onPress}>
-      <Image source={{ uri: img }} style={styles.image} />
+      <View style={styles.imageContainer}>
+        <Text style={[styles.idNumber, { color: theme.textSecondary }]}>#{item.id}</Text>
+        <Image source={{ uri: img }} style={styles.image} />
+      </View>
       <View style={styles.textContainer}>
         <Text style={[styles.name, { color: theme.text }]}>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</Text>
         <Text style={{ color: theme.textSecondary }}>Type: {item.types.map(t => t.type.name).join(', ')}</Text>
@@ -33,6 +36,8 @@ export default function PokemonCard({ item, onPress, onToggleFavorite, isFavorit
 
 const styles = StyleSheet.create({
   card: { flexDirection: 'row', padding: 10, marginVertical: 6, backgroundColor: '#fff', borderRadius: 10, alignItems: 'center' },
+  imageContainer: { alignItems: 'center' },
+  idNumber: { fontSize: 12, fontWeight: 'bold', marginBottom: 2 },
   image: { width: 70, height: 70 },
   textContainer: { flex: 1, marginLeft: 12 },
   name: { fontSize: 20, fontWeight: 'bold', marginBottom: 4 },
